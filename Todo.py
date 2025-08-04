@@ -8,8 +8,8 @@ class Task:
         all_tasks = storage.get_data()
 
         if all_tasks:
-            id = all_tasks[-1]['id']
-            tsk = {"id": id+1, "task": task, "deadline": deadline, "complete": False}
+            id = all_tasks[-1]["id"]
+            tsk = {"id": id + 1, "task": task, "deadline": deadline, "complete": False}
         else:
             tsk = {"id": 1, "task": task, "deadline": deadline, "complete": False}
 
@@ -19,31 +19,48 @@ class Task:
 
     def remove(self, id):
         all_tasks = storage.get_data()
-        all_tasks.pop(id-1)
+        all_tasks.pop(id - 1)
         storage.write_json(all_tasks)
+        
 
-    def edit(self, id):
-        pass
+
+    def edit(self, id, task, deadline, complete):
+        all_tasks = storage.get_data()
+        
+        for i in range(len(all_tasks)):
+            if all_tasks[i]["id"] == id:
+                if task:
+                    all_tasks[i]["task"] = task
+                if deadline:
+                    all_tasks[i]["deadline"] = deadline
+                if complete:
+                    all_tasks[i]["complete"] = complete
+                storage.write_json(all_tasks)
+                return True
 
 
     def List(self, desc):
         all_tasks = storage.get_data()
         helper.fix_id(all_tasks)
-        
+
         if desc:
             all_tasks.reverse()
             for task in all_tasks:
-                print(f'{task.get('id')}. {task.get('task')}  deadline( {task.get('deadline')} )  complete => {task.get('complete')}')
+                print(
+                    f"{task.get('id')}. {task.get('task')}  deadline( {task.get('deadline')} )  complete => {task.get('complete')}"
+                )
 
         else:
             for task in all_tasks:
-                print(f'{task.get('id')}. {task.get('task')}  deadline( {task.get('deadline')} )  complete => {task.get('complete')}')
+                print(
+                    f"{task.get('id')}. {task.get('task')}  deadline( {task.get('deadline')} )  complete => {task.get('complete')}"
+                )
 
 
     def complete(self, id):
         all_tasks = storage.get_data()
         for i in range(len(all_tasks)):
-            if all_tasks[i]['id']==id:
-                all_tasks[i]['complete'] = True
+            if all_tasks[i]["id"] == id:
+                all_tasks[i]["complete"] = True
                 storage.write_json(all_tasks)
                 break

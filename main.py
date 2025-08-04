@@ -21,13 +21,15 @@ def add(task, deadline):
             
         tsk.add(task, deadline)
         click.echo(f">task {task} is append.\n")
+
     else:
         click.echo('>wrong format for date =>> yyyy/mm/dd')
+
 
 #command remove
 
 @cli.command()
-@click.argument('id')
+@click.option('--id', prompt='>Enter task\'s id: ', help='this option taken task\'s id for deleting the task.')
 def remove(id):
     id = int(id)
     tsk.remove(id)
@@ -36,10 +38,15 @@ def remove(id):
 
 #command edit
 
-# @cli.command()
-# @click.argument('id')
-# def edit(id):
-#     tsk.edit(id)
+@cli.command()
+@click.option('--id', prompt='Enter task\'s id: ', help='this option taken task\'s id for deleting the task.', type=int)
+@click.option('--task', required=False, help='use it for rename task.', type=str)
+@click.option('--deadline', required=False, help='use it for changing deadline.', type=str)
+@click.option('--complete', required=False, help='use it for complete the task.', type=bool)
+def edit(id, task=None, deadline=None, complete=None):
+    result = tsk.edit(id, task, deadline, complete)
+    if result:
+        click.echo(f'task {id} is edited.')
 
 
 #command list
