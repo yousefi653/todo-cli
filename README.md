@@ -68,4 +68,4 @@ pip install -r requirements.txt
 
 Author
 
-Created by Yosuef Ghasemi.
+Created by Yousef Ghasemi.
