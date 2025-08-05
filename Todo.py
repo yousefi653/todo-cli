@@ -1,5 +1,5 @@
 import storage, helper
-import datetime
+import jdatetime
 
 
 class Task:
@@ -19,27 +19,35 @@ class Task:
 
     def remove(self, id):
         all_tasks = storage.get_data()
-        all_tasks.pop(id - 1)
-        storage.write_json(all_tasks)
-        
+        target = [task for task in all_tasks if task['id']==id]
+        if target:
+            all_tasks.remove(target[0])
+            storage.write_json(all_tasks)
+            return True
+        print(f'>please enter valid id.')
 
 
     def edit(self, id, task, deadline, complete):
         all_tasks = storage.get_data()
-        
+
         for i in range(len(all_tasks)):
             if all_tasks[i]["id"] == id:
+                
                 if task:
                     all_tasks[i]["task"] = task
+                
                 if deadline:
+                    deadline = helper.change_format(deadline)
                     all_tasks[i]["deadline"] = deadline
-                if complete:
+                
+                if complete!=None:
                     all_tasks[i]["complete"] = complete
                 storage.write_json(all_tasks)
                 return True
 
 
     def List(self, desc):
+
         all_tasks = storage.get_data()
         helper.fix_id(all_tasks)
 
@@ -47,13 +55,13 @@ class Task:
             all_tasks.reverse()
             for task in all_tasks:
                 print(
-                    f"{task.get('id')}. {task.get('task')}  deadline( {task.get('deadline')} )  complete => {task.get('complete')}"
+                    f"{task.get('id')}. {task.get('task')}  deadline( {task.get('deadline')} & {helper.left_day(task['deadline'])} days left.)  complete => {task.get('complete')}\n"
                 )
 
         else:
             for task in all_tasks:
                 print(
-                    f"{task.get('id')}. {task.get('task')}  deadline( {task.get('deadline')} )  complete => {task.get('complete')}"
+                    f"{task.get('id')}. {task.get('task')}  deadline( {task.get('deadline')} & {helper.left_day(task['deadline'])} days left.)  complete => {task.get('complete')}\n"
                 )
 
 
@@ -64,3 +72,13 @@ class Task:
                 all_tasks[i]["complete"] = True
                 storage.write_json(all_tasks)
                 break
+
+
+    def today(self):
+        all_tasks = storage.get_data()
+        today = helper.change_format(jdatetime.datetime.now().date().strftime('%Y/%m/%d'))
+        for task in all_tasks:
+            if  task['deadline'] == today:
+                print(
+                    f"{task.get('id')}. {task.get('task')}  deadline( {task.get('deadline')} )  complete => {task.get('complete')}"
+                )

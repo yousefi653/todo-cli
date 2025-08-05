@@ -1,5 +1,6 @@
 import click
 import shlex
+import re
 
 from Todo import Task
 import helper, storage
@@ -18,35 +19,35 @@ tsk = Task()
 @click.argument("deadline")
 def add(task, deadline):
     if helper.check_date(deadline):
-            
+        deadline = helper.change_format(deadline)
         tsk.add(task, deadline)
         click.echo(f">task {task} is append.\n")
 
     else:
-        click.echo('>wrong format for date =>> yyyy/mm/dd')
+        click.echo('>>wrong format for date =>> yyyy/mm/dd')
 
 
 #command remove
 
 @cli.command()
-@click.option('--id', prompt='>Enter task\'s id: ', help='this option taken task\'s id for deleting the task.')
+@click.option('--id', prompt=">Enter task's id: ", help='this option taken task\'s id for deleting the task.', type=int)
 def remove(id):
-    id = int(id)
-    tsk.remove(id)
-    click.echo(f'task {id} is removed')
+    result = tsk.remove(id)
+    if result:
+        click.echo(f'task {id} is removed\n')
 
 
 #command edit
 
 @cli.command()
-@click.option('--id', prompt='Enter task\'s id: ', help='this option taken task\'s id for deleting the task.', type=int)
+@click.option('--id', prompt=">Enter task's id: ", help='this option taken task\'s id for deleting the task.', type=int)
 @click.option('--task', required=False, help='use it for rename task.', type=str)
 @click.option('--deadline', required=False, help='use it for changing deadline.', type=str)
 @click.option('--complete', required=False, help='use it for complete the task.', type=bool)
 def edit(id, task=None, deadline=None, complete=None):
     result = tsk.edit(id, task, deadline, complete)
     if result:
-        click.echo(f'task {id} is edited.')
+        click.echo(f'task {id} is edited.\n')
 
 
 #command list
@@ -61,23 +62,34 @@ def List(desc):
 #command complete
 
 @cli.command()
-@click.argument('id')
+@click.option('--id', prompt=">Enter task's id: ", type=int)
 def complete(id):
-    id = int(id)
     tsk.complete(id)
-    click.echo(f'task {id} is complete.')
+    click.echo(f'>task {id} is complete.\n')
+
+#command today
+
+@cli.command()
+def today():
+    tsk.today() 
+
 
 
 def shell():
     while(True):
         try:
             command = input('>>>').strip()
-            if 'quit' in command:
-                break
             args = shlex.split(command)
+
+            if args[0] == 'quit':
+                break
+            if args[0] == 'clear':
+                click.clear()
+                continue
+
             cli(args, standalone_mode=False)
         except Exception as Error:
-            print(f'had Error: {Error}.')
+            print(f'>>had Error: {Error}.')
 
 
 if __name__ == '__main__':
