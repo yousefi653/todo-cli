@@ -21,7 +21,7 @@ It supports task management features like add, edit, remove, complete, and list 
 ## Installation
 
 1. Clone the repository:
-git clone https://github.com/your-username/todo-cli.git
+git clone https://github.com/yousefi653/todo-cli.git
 cd todo-cli
 
 2. Create a virtual environment (optional but recommended):
