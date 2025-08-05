@@ -44,6 +44,7 @@ class Task:
                     all_tasks[i]["complete"] = complete
                 storage.write_json(all_tasks)
                 return True
+        print('>please enter valid id.')
 
 
     def List(self, desc):
@@ -67,11 +68,14 @@ class Task:
 
     def complete(self, id):
         all_tasks = storage.get_data()
+        
         for i in range(len(all_tasks)):
             if all_tasks[i]["id"] == id:
                 all_tasks[i]["complete"] = True
                 storage.write_json(all_tasks)
-                break
+                return True
+            
+        print('>please enter valid id.')
 
 
     def today(self):
