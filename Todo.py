@@ -49,31 +49,17 @@ class Task:
         all_tasks = storage.get_data()
         helper.fix_id(all_tasks)
 
+        if complete:
+            all_tasks = [task for task in all_tasks if task['complete'] == True]
+        if incomplete:
+            all_tasks = [task for task in all_tasks if task['complete'] == False]
         if desc:
             all_tasks.reverse()
-            for task in all_tasks:
-                print(
-                    f"{task.get('id')}. {task.get('task')}  deadline( {task.get('deadline')} & {helper.left_day(task['deadline'])} days left.)  complete => {task.get('complete')}\n"
-                )
 
-        elif complete:
-            for task in all_tasks:
-                if task["complete"] == True:
-                    print(
-                        f"{task.get('id')}. {task.get('task')}  deadline( {task.get('deadline')} & {helper.left_day(task['deadline'])} days left.)  complete => {task.get('complete')}\n"
-                    )
-
-        elif incomplete:
-            for task in all_tasks:
-                if task["complete"] == False:
-                    print(
-                        f"{task.get('id')}. {task.get('task')}  deadline( {task.get('deadline')} & {helper.left_day(task['deadline'])} days left.)  complete => {task.get('complete')}\n"
-                    )
-        else:
-            for task in all_tasks:
-                print(
-                    f"{task.get('id')}. {task.get('task')}  deadline( {task.get('deadline')} & {helper.left_day(task['deadline'])} days left.)  complete => {task.get('complete')}\n"
-                )
+        for task in all_tasks:
+            print(
+                f"{task.get('id')}. {task.get('task')}  deadline( {task.get('deadline')} & {helper.left_day(task['deadline'])} days left.)  complete => {task.get('complete')}\n"
+            )
 
     def complete(self, id):
         all_tasks = storage.get_data()
