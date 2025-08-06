@@ -4,11 +4,11 @@ import jdatetime
 
 
 def fix_id(tasks):
-    
+
     n = 0
     for i in range(len(tasks)):
-        n+=1
-        tasks[i]['id'] = n
+        n += 1
+        tasks[i]["id"] = n
     storage.write_json(tasks)
 
 
@@ -17,7 +17,7 @@ def check_date(date):
     result = re.match(pattern, date)
     if result:
         return True
-    
+
 
 def change_format(date):
     date = jdatetime.datetime.strptime(date, "%Y/%m/%d").date()
