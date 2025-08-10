@@ -86,7 +86,7 @@ def List(desc, complete, incomplete):
 @cli.command()
 @click.option("--id", prompt=">Enter task's id: ", type=int)
 def complete(id):
-    result = tsk.complete()
+    result = tsk.complete(id)
     if result:
         click.echo(f">task {id} is complete.\n")
 
