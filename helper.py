@@ -13,18 +13,28 @@ def fix_id(tasks):
 
 
 def check_date(date):
+
     pattern = r"^\d{4}/\d{1,2}/\d{1,2}$"
     result = re.match(pattern, date)
-    if result:
-        return True
+    if result is None:
+        raise ValueError("deadline must be like yyyy/mm/dd")
+
+    try:
+        date = jdatetime.datetime.strptime(date, "%Y/%m/%d").date()
+    except ValueError:
+        raise ValueError("\nmonth must be in range (1-12).\nday must be in range(1-31)")
+    else:
+        return date.strftime('%Y/%m/%d')
 
 
-def change_format(date):
-    date = jdatetime.datetime.strptime(date, "%Y/%m/%d").date()
-    return date.strftime("%A - %Y/%m/%d")
-
-
-def left_day(deadline):
-    deadline = jdatetime.datetime.strptime(deadline, "%A - %Y/%m/%d").date()
+def time_left(deadline):
     today = jdatetime.date.today()
-    return (deadline - today).days
+    deadline = jdatetime.datetime.strptime(deadline, "%Y/%m/%d").date()
+    distance = deadline - today
+    if distance.days > 0:
+        return distance.days
+    elif distance.days < 0:
+        return "task is expired"
+    else:
+        time = jdatetime.datetime.now().time()
+        return f"You have {24 - time.hour}:{60 - time.minute} time."

@@ -3,3 +3,4 @@ __pycache__/
 .env
 *.env
 tasks.json
+.vscode/
