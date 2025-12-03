@@ -47,12 +47,15 @@ def remove(id):
 def List(desc, complete, incomplete, deadline):
     data = tsk.List(desc, complete, incomplete, deadline)
 
-    mytable = PrettyTable(['ID', 'TASK', 'DEADLINE', 'TIME_LEFT', 'COMPLETE'])
-    for item in data:
-        time_left = helper.time_left(item['deadline'])
+    if data:
+        mytable = PrettyTable(['ID', 'TASK', 'DEADLINE', 'TIME_LEFT', 'COMPLETE'])
+        for item in data:
+            time_left = helper.time_left(item['deadline'])
 
-        mytable.add_row([item['id'], item['task'], item['deadline'], time_left if type(time_left) is str else f"{time_left} day is remains.", item['complete']])
-    click.echo(mytable)
+            mytable.add_row([item['id'], item['task'], item['deadline'], time_left if type(time_left) is str else f"{time_left} day is remains.", item['complete']])
+        click.echo(mytable)
+    else:
+        raise Exception("Data not found.")
 
 
 # command edit
