@@ -24,7 +24,7 @@ def check_date(date):
     except ValueError:
         raise ValueError("\nmonth must be in range (1-12).\nday must be in range(1-31)")
     else:
-        return date.strftime('%Y/%m/%d')
+        return date.strftime("%Y/%m/%d")
 
 
 def time_left(deadline):
@@ -38,3 +38,8 @@ def time_left(deadline):
     else:
         time = jdatetime.datetime.now().time()
         return f"You have {24 - time.hour}:{60 - time.minute} time."
+
+
+def get_today():
+    today = jdatetime.datetime.now().strftime("%Y/%m/%d")
+    return today
