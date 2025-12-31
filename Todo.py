@@ -1,5 +1,6 @@
 import storage, helper
 import jdatetime
+import os
 
 
 class Task:
@@ -53,6 +54,7 @@ class Task:
                 return result
         raise ValueError("id not found.")
 
+
     def List(self, desc, complete, incomplete, deadline):
         all_tasks = storage.get_data()
         data = []
@@ -95,6 +97,7 @@ class Task:
             else:
                 return data
 
+
     def complete(self, id):
         all_tasks = storage.get_data()
 
@@ -105,3 +108,7 @@ class Task:
                 return True
 
         raise Exception("Please Enter a valid id")
+    
+
+    def clear_all(self):
+        os.remove("tasks.json")        

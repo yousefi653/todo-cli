@@ -119,6 +119,12 @@ def complete(id):
         click.echo(f">task {id} is complete.\n")
 
 
+@cli.command(help="You can remove all tasks from your database (run clear-all)")
+def clear_all():
+    if click.confirm("Do you want to delete all tasks?"):
+        tsk.clear_all()
+
+
 def shell():
     click.clear()
     click.secho("Todo_cli".center(50, " "), bold=True, fg="blue", bg="magenta")
